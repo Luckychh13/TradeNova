@@ -15,7 +15,7 @@ const Header = () => {
    <header>
     <div className='main-container inner'>
         <Link href="/">
-        <Image src="logo.svg" alt='TradeNova logo'  width={190} height={1000} />
+        <Image src="/logo.svg" alt='TradeNova logo'  width={190} height={1000} />
         </Link>
 
         <nav>
