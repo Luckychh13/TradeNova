@@ -24,8 +24,10 @@ const CandleStickChart = ({children, data,coinId, height=360, initialPeriod = 'd
                 days,
               })
         setOhlcData(newData ?? [])
+        return true
       } catch (error) {
         console.error('Failed to fetch OHLCData', error)
+        return false
       }
     }
 
@@ -33,8 +35,10 @@ const CandleStickChart = ({children, data,coinId, height=360, initialPeriod = 'd
       if(newPeriod === period) return 
 
       startTransition(async () => {
-        setPeriod(newPeriod)
-        await fetchOHLCData(newPeriod)
+        const success = await fetchOHLCData(newPeriod)
+        if (success) {
+          setPeriod(newPeriod)
+        }
       })
     }
 
