@@ -11,7 +11,15 @@ import {
 import { cn } from "@/lib/utils"
 
 const DataTable = <T,>({
-    columns,data,rowKey,tableClassName,headerRowClassName,headerCellClassName,bodyRowClassName,bodyCellClassName,headerClassName
+    columns,
+    data,
+    rowKey,
+    tableClassName,
+    headerRowClassName,
+    headerCellClassName,
+    bodyRowClassName,
+    bodyCellClassName,
+    headerClassName,
 }: DataTableProps<T>) => {
   return (
     <Table className={cn('custom-scrollbar', tableClassName)}>
@@ -22,7 +30,7 @@ const DataTable = <T,>({
             <TableHead
               key={i}
               className={cn(
-                'bg-dark-400 text-purple-100 py-4 first:pl-5 last:pr-5',
+                'bg-dark-400 text-purple-100 py-4 first:pl-5 last:pr-5',headerCellClassName,column.headClassName,
                 headerCellClassName,
                 column.headClassName,
               )}
