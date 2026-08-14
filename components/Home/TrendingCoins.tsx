@@ -2,7 +2,7 @@ import React from 'react'
 import { fetcher } from '@/lib/coingecko.action'
 import Link from 'next/link';
 import { TrendingDown, TrendingUp } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn, formatPercentage } from '@/lib/utils';
 import Image from 'next/image';
 import DataTable from '@/components/DataTable'
 import { formatCurrency } from '@/lib/utils';
@@ -48,7 +48,9 @@ const TrendingCoins = async () => {
               <TrendingUp width={16} height={16}/>
             ):
             <TrendingDown width={16} height={16} />
-            }</p>
+            }
+            {formatPercentage(coin.item.data.price_change_percentage_24h.usd)}
+            </p>
           </div>
         )
       }
