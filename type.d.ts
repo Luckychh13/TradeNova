@@ -316,3 +316,36 @@ interface PoolData {
   name: string;
   network: string;
 }
+
+type ExtendedPriceData = {
+    usd: number
+    coin: string
+    price: number
+    change24h: number
+    marketCap: number
+    volume24h: number
+    timestamp: number
+}
+
+type Trade = {
+    price: number
+    value: number
+    timestamp: number
+    type: string   // 'buy' | 'sell'
+    amount: number
+}
+
+type UseGeckoTerminalPoolProps = {
+    poolId: string
+    coinId?: string
+    liveInterval?: string
+    pollMs?: number
+}
+
+type UseGeckoTerminalPoolReturn = {
+    price: ExtendedPriceData | null
+    trades: Trade[]
+    ohlcv: OHLCData | null
+    isConnected: boolean
+}
+
