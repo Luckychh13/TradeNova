@@ -12,12 +12,15 @@ const CandleStickChart = ({children, data,coinId, height=360, initialPeriod = 'd
     const chartRef = useRef<IChartApi | null>(null)
     const candleSeriesRef = useRef<ISeriesApi<'Candlestick'> | null>(null)
     const prevOhlcvDataLength = useRef<number>(data?.length || 0)
+    const requestSequenceRef = useRef(0)
 
     const [period,setPeriod] = useState(initialPeriod)
     const [ohlcData, setOhlcData] = useState<OHLCData[]>(data ?? [])
     const [isPending, startTransition] = useTransition()
 
     const fetchOHLCData = async (selectedPeriod: Period) => {
+      const requestId = ++requestSequenceRef.current
+
       try {
         const {days } = PERIOD_CONFIG[selectedPeriod]
         const newData = await fetcher<OHLCData[]>(`coins/${coinId}/ohlc`, {
@@ -25,9 +28,10 @@ const CandleStickChart = ({children, data,coinId, height=360, initialPeriod = 'd
                 days,
               })
 
-              startTransition(() => {
-                setOhlcData(newData ?? [])
-              })
+        if (requestId !== requestSequenceRef.current) {
+          return false
+        }
+
         setOhlcData(newData ?? [])
         return true
       } catch (error) {
@@ -39,7 +43,9 @@ const CandleStickChart = ({children, data,coinId, height=360, initialPeriod = 'd
     const handlePeriodChange = (newPeriod:Period) => {
       if(newPeriod === period) return 
 
-      setPeriod(newPeriod)
+      startTransition(() => {
+        setPeriod(newPeriod)
+      })
       fetchOHLCData(newPeriod)
     }
 
@@ -86,17 +92,24 @@ const CandleStickChart = ({children, data,coinId, height=360, initialPeriod = 'd
         (item) => [Math.floor(item[0] / 1000), item[1], item[2], item[3], item[4]] as OHLCData
       ) 
 
-       let merged: OHLCData[]
+      let merged: OHLCData[]
 
       if(liveOhlcv){
-        const liveTimestamp = liveOhlcv[0]
+        const normalizedLiveCandle = [
+          Math.floor(liveOhlcv[0] / 1000),
+          liveOhlcv[1],
+          liveOhlcv[2],
+          liveOhlcv[3],
+          liveOhlcv[4],
+        ] as OHLCData
 
-        const lastHistoricalCandle = convertedToSeconds[convertedToSeconds.length-1]
+        const liveTimestamp = normalizedLiveCandle[0]
+        const lastHistoricalCandle = convertedToSeconds[convertedToSeconds.length - 1]
 
         if(lastHistoricalCandle && lastHistoricalCandle[0] === liveTimestamp){
-          merged = [...convertedToSeconds.slice(0, -1),liveOhlcv]
+          merged = [...convertedToSeconds.slice(0, -1), normalizedLiveCandle]
         }else{
-          merged = [...convertedToSeconds, liveOhlcv]
+          merged = [...convertedToSeconds, normalizedLiveCandle]
         }
       }else{
         merged = convertedToSeconds
