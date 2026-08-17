@@ -12,7 +12,8 @@ const nextConfig: NextConfig = {
         hostname:"coin-images.coingecko.com"
       }
     ]
-  }
+  },
+  allowedDevOrigins: ['192.168.29.45'],
 };
 
 export default nextConfig;
