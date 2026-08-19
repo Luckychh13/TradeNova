@@ -2,6 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  allowedDevOrigins: ['192.168.29.45'],
+  turbopack: {
+    root: process.cwd(),
+  },
   images:{
     remotePatterns: [
       {
@@ -13,7 +17,6 @@ const nextConfig: NextConfig = {
       }
     ]
   },
-  allowedDevOrigins: ['192.168.29.45'],
 };
 
 export default nextConfig;

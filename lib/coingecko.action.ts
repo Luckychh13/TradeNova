@@ -67,3 +67,16 @@ export async function getPools(
     return fallback;
   }
 }
+
+export async function searchCoins(query: string): Promise<SearchCoin[]>{
+  const response = await fetch(
+    `https://api.coingecko.com/api/v3/search?query=${encodeURIComponent(query)}`
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to search coins');
+  }
+
+  const result = (await response.json()) as { coins: SearchCoin[] };
+  return result.coins;
+};

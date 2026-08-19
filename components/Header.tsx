@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import { SearchModal } from './SearchModal'
 
 const Header = () => {
 
@@ -15,7 +16,14 @@ const Header = () => {
    <header>
     <div className='main-container inner'>
         <Link href="/">
-        <Image src="/logo.svg" alt='TradeNova logo'  width={190} height={1000} />
+        <Image
+          src="/logo.svg"
+          alt='TradeNova logo'
+          width={190}
+          height={50}
+          loading='eager'
+          style={{ height: 'auto' }}
+        />
         </Link>
 
         <nav>
@@ -23,7 +31,7 @@ const Header = () => {
             'is-active': pathname === '/',
             'is-home': true
           })}>Home</Link>
-          <p>Search Modeal</p>
+          <SearchModal initialTrendingCoins={[]} />
           <Link href="/coins" className={cn('nav-link', {
             'is-active': pathname === '/coins',
           })}>All Coins</Link>
