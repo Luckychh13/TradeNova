@@ -9,10 +9,9 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination"
 import { buildPageNumbers, cn, ELLIPSIS } from "@/lib/utils"
-import type { Pagination as PaginationType } from "@/type"
 import { useRouter } from "next/navigation"
 
-const CoinsPagination = ({currentPage, totalPages, hasMorePages}: PaginationType) => {
+const CoinsPagination = ({currentPage, totalPages, hasMorePages}: Pagination) => {
 
   const router = useRouter()
 

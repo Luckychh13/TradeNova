@@ -159,7 +159,6 @@ export const useGeckoTerminalPool = ({
         } catch (err: unknown) {
             const isAbort = err instanceof Error && err.name === "AbortError"
             if (!isAbort) {
-                console.error("GeckoTerminal fetch error:", err)
                 setIsConnected(false)
 
                 const isRateLimitError = err instanceof Error && err.message.includes("rate limit")
